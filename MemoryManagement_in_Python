@@ -1,0 +1,70 @@
+# -----------------------------MEMORY MANAGEMENT (START)
+# cleam memory everytime that a function become unnecessary:
+
+import gc
+
+def killer_func():
+    result = []
+    x = large_dataset_1()
+    result.append(process_function(x))
+    del x
+    gc.collect()
+    
+    y = large_dataset_2()
+    result.append(process_function(y))
+    del y
+    gc.collect()
+    
+    z = large_dataset_3()
+    result.append(process_function(z))
+    del z
+    gc.collect()
+    
+    return result
+
+# slice the function in small chunks to improve the memory management:
+
+def process_large_dataset_1():
+    x = large_dataset_1()
+    result = process_function(x)
+    return result
+
+def process_large_dataset_2():
+    y = large_dataset_2()
+    result = process_function(y)
+    return result
+
+def process_large_dataset_3():
+    z = large_dataset_3()
+    result = process_function(z)
+    return result
+def killer_func():
+    result = []
+    result.append(process_large_dataset_1())
+    result.append(process_large_dataset_2())
+    result.append(process_large_dataset_3())
+    return result
+
+# process the data in smaller chunks:
+
+def process_file_in_chunks(file_path, chunk_size=1024):
+    with open(file_path, 'r') as file:
+        while chunk := file.read(chunk_size):
+            process_function(chunk)
+
+# Use generators to process items one at a time instead of loading everything into memory:
+
+def large_dataset_generator():
+    for i in range(large_dataset_size):
+        yield fetch_data(i)
+
+def killer_func():
+    result = []
+    for data in large_dataset_generator():
+        result.append(process_function(data))
+    return result
+
+#https://medium.com/@gabrielpelizzaro/how-to-safely-clean-memory-in-python-a-practical-guide-8e4dfa76d375
+----------------------------------------------------------------
+import gc
+gc.collect()
