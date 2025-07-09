@@ -66,5 +66,68 @@ def killer_func():
 
 #https://medium.com/@gabrielpelizzaro/how-to-safely-clean-memory-in-python-a-practical-guide-8e4dfa76d375
 ----------------------------------------------------------------
+# import garbage collection module
 import gc
+
+# Create a list with a cyclic reference
+my_list = []
+my_list.append(my_list)
+
+# Delete the list
+del my_list
+
+# Manually trigger garbage collection
+collected = gc.collect()
+
+# Verify memory release
+print(f"Garbage collector collected {collected} objects.")
+
+---------------
+
+import gc
+import tracemalloc
+
+# Create a large list
+data = [i for i in range(1000000)]
+
+# Measure memory usage before deletion
+tracemalloc.start()
+snapshot1 = tracemalloc.take_snapshot()
+
+# Delete the list explicitly
+del data
+
+# Force garbage collection to ensure memory release
 gc.collect()
+
+# Measure memory usage after deletion
+snapshot2 = tracemalloc.take_snapshot()
+stats = snapshot2.compare_to(snapshot1, 'lineno')
+print(f"Memory released by deleting large list: {stats[0].size_diff / 10**6:.2f} MB")
+
+-----------------
+
+import gc
+import tracemalloc
+
+# Create a large dictionary
+data_dict = {i: str(i) for i in range(10**6)}
+
+# Measure memory usage before clearing
+tracemalloc.start()
+snapshot1 = tracemalloc.take_snapshot()
+
+# Clear the dictionary explicitly
+data_dict.clear()
+
+# Force garbage collection to release memory
+gc.collect()
+
+# Measure memory usage after clearing
+snapshot2 = tracemalloc.take_snapshot()
+stats = snapshot2.compare_to(snapshot1, 'lineno')
+print(f"Memory released by clearing dictionary: {stats[0].size_diff / 10**6:.2f} MB")
+
+# https://www.geeksforgeeks.org/python/releasing-memory-in-python/
+
+---------------------------------------------------------------------------
