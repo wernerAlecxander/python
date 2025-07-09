@@ -131,3 +131,103 @@ print(f"Memory released by clearing dictionary: {stats[0].size_diff / 10**6:.2f}
 # https://www.geeksforgeeks.org/python/releasing-memory-in-python/
 
 ---------------------------------------------------------------------------
+
+import ctypes
+
+# Assuming you have a pointer to a C-allocated memory (STUDY THIS SUBJECT)
+ctypes.cast(pointer, ctypes.POINTER(ctypes.c_char)).contents = None
+
+-----------------
+
+import tracemalloc
+
+tracemalloc.start()
+
+# ... run your application ...
+
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics('lineno')
+
+print("[ Top 10 ]")
+for stat in top_stats[:10]:
+    print(stat)
+
+---------------------------
+
+import tracemalloc
+
+# Store 25 frames
+tracemalloc.start(25)
+
+# ... run your application ...
+
+snapshot = tracemalloc.take_snapshot()
+top_stats = snapshot.statistics('traceback')
+
+# pick the biggest memory block
+stat = top_stats[0]
+print("%s memory blocks: %.1f KiB" % (stat.count, stat.size / 1024))
+for line in stat.traceback.format():
+    print(line)
+
+------------------------
+
+import linecache
+import os
+import tracemalloc
+
+def display_top(snapshot, key_type='lineno', limit=10):
+    snapshot = snapshot.filter_traces((
+        tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
+        tracemalloc.Filter(False, "<unknown>"),
+    ))
+    top_stats = snapshot.statistics(key_type)
+
+    print("Top %s lines" % limit)
+    for index, stat in enumerate(top_stats[:limit], 1):
+        frame = stat.traceback[0]
+        print("#%s: %s:%s: %.1f KiB"
+              % (index, frame.filename, frame.lineno, stat.size / 1024))
+        line = linecache.getline(frame.filename, frame.lineno).strip()
+        if line:
+            print('    %s' % line)
+
+    other = top_stats[limit:]
+    if other:
+        size = sum(stat.size for stat in other)
+        print("%s other: %.1f KiB" % (len(other), size / 1024))
+    total = sum(stat.size for stat in top_stats)
+    print("Total allocated size: %.1f KiB" % (total / 1024))
+
+tracemalloc.start()
+
+# ... run your application ...
+
+snapshot = tracemalloc.take_snapshot()
+display_top(snapshot)
+
+-----------------
+
+import tracemalloc
+
+tracemalloc.start()
+
+# Example code: compute a sum with a large temporary list
+large_sum = sum(list(range(100000)))
+
+first_size, first_peak = tracemalloc.get_traced_memory()
+
+tracemalloc.reset_peak()
+
+# Example code: compute a sum with a small temporary list
+small_sum = sum(list(range(1000)))
+
+second_size, second_peak = tracemalloc.get_traced_memory()
+
+print(f"{first_size=}, {first_peak=}")
+print(f"{second_size=}, {second_peak=}")
+
+------------------
+
+# https://docs.python.org/3/library/tracemalloc.html (IMPORTANT)
+
