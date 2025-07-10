@@ -287,3 +287,24 @@ gc.unfreeze()
 gc.get_freeze_count()
 # Return the number of objects in the permanent generation.
 
+gc.garbage
+# A list of objects which the collector found to be unreachable but could not be freed (uncollectable objects).
+
+gc.callbacks
+# A list of callbacks that will be invoked by the garbage collector before and after collection.
+
+gc.DEBUG_STATS
+# Print statistics during collection. This information can be useful when tuning the collection frequency.
+
+gc.DEBUG_COLLECTABLE
+# Print information on collectable objects found.
+
+gc.DEBUG_UNCOLLECTABLE
+# Print information of uncollectable objects found (objects which are not reachable but cannot be freed by the collector).
+
+gc.DEBUG_SAVEALL
+# When set, all unreachable objects found will be appended to garbage rather than being freed.
+
+gc.DEBUG_LEAK
+# The debugging flags necessary for the collector to print information about a leaking program (equal to DEBUG_COLLECTABLE | DEBUG_UNCOLLECTABLE | DEBUG_SAVEALL).
+
