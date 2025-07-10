@@ -231,3 +231,28 @@ print(f"{second_size=}, {second_peak=}")
 
 # https://docs.python.org/3/library/tracemalloc.html (IMPORTANT)
 
+-----------------------------------------------------------------------------------------------
+
+gc.enable()
+# Enable automatic garbage collection.
+
+gc.disable()
+# Disable automatic garbage collection.
+
+gc.isenabled()
+# Return True if automatic collection is enabled.
+
+gc.collect(generation=2)
+# The sum of collected objects and uncollectable objects is returned.
+
+gc.set_debug(flags)
+
+gc.get_debug()
+
+gc.get_objects(generation=None)
+
+gc.get_stats()
+
+gc.set_threshold()
+
+
