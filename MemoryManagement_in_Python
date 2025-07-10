@@ -253,6 +253,37 @@ gc.get_objects(generation=None)
 
 gc.get_stats()
 
-gc.set_threshold()
+gc.set_threshold(threshold0[, threshold1[, threshold2]])
 
+gc.get_count()
+# return the current collection counts as a tuple of (count0, count1, count2).
+
+gc.get_count()
+
+gc.get_referents(*objs)
+
+gc.is_tracked(obj)
+# Returns True if the object is currently tracked by the garbage collector, False otherwise.
+-----------------------------
+gc.is_tracked(0)
+
+gc.is_tracked("a")
+
+gc.is_tracked([])
+
+gc.is_tracked({})
+
+gc.is_tracked({"a": 1})
+
+gc.is_tracked({"a": []})
+--------------------------------
+
+gc.freeze()
+# Freeze all the objects tracked by the garbage collector; move them to a permanent generation and ignore them in all the future collections.
+
+gc.unfreeze()
+# Unfreeze the objects in the permanent generation, put them back into the oldest generation.
+
+gc.get_freeze_count()
+# Return the number of objects in the permanent generation.
 
