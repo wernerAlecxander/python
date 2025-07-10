@@ -310,3 +310,5 @@ gc.DEBUG_LEAK
 
 # https://docs.python.org/3/library/gc.html#gc.get_referrers
 ------------------------------------------------------------------------------------
+
+# https://github.com/python/cpython/blob/main/InternalDocs/garbage_collector.md (COMPLEMENTARY STUDY)
