@@ -312,3 +312,7 @@ gc.DEBUG_LEAK
 ------------------------------------------------------------------------------------
 
 # https://github.com/python/cpython/blob/main/InternalDocs/garbage_collector.md (COMPLEMENTARY STUDY)
+# https://docs.python.org/3/library/tracemalloc.html
+# https://docs.python.org/3/library/sys.html#sys.getsizeof
+# https://docs.python.org/3/library/ctypes.html
+# 
